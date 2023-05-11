@@ -16,8 +16,8 @@ on(e.manager_id = man.employee_id);
 
 select e.employee_id, e.last_name, e.manager_id, man.last_name 
 from employees e
-inner join employees man
-on(e.manager_id = man.employee_id) or e.manager_id is null;
+left join employees man
+on(e.manager_id = man.employee_id);
 
 select d.department_id, d.department_name, e.employee_id, e.last_name
 from departments d
@@ -41,16 +41,17 @@ from employees man
 join employees e
 on(e.hire_date < man.hire_date and e.manager_id = man.employee_id);
 
-select department_id, department_name, count(employee_id)
-from employees
-natural join departments
-group by department_id, department_name;
+select d.department_id, d.department_name, count(e.employee_id)
+from employees e
+inner join departments d
+on(e.department_id = d.department_id)
+group by d.department_id, d.department_name;
 
 select e.employee_id, count(h.job_id) as job_count
 from employees e
 join job_history h
 on(e.employee_id = h.employee_id)
-group by e.employee_id having count(h.job_id) != 1;
+group by e.employee_id having count(h.job_id) > 1;
 
 select e.employee_id, e.last_name, man.employee_id, man.last_name
 from employees man
