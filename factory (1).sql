@@ -11,7 +11,7 @@ GRANT ALL ON SCHEMA factory TO nedobezhkin_pv;
 ALTER ROLE nedobezhkin_pv IN DATABASE nedobezhkin_pv_db
     SET search_path TO factory, public;
 	
-CREATE TABLE  IF NOT EXISTS Product_type  (
+CREATE TABLE  IF NOT EXISTS factory.Product_type  (
 	 id  serial NOT NULL,
 	 Product_name  TEXT NOT NULL UNIQUE,
 	CONSTRAINT  Product_type_pk  PRIMARY KEY ( id )
@@ -23,7 +23,7 @@ COMMENT ON COLUMN Product_type.id IS 'Номер типа продукта';
 COMMENT ON COLUMN Product_type.product_name IS 'Название типа продукта';
 
 
-CREATE TABLE  IF NOT EXISTS Product  (
+CREATE TABLE  IF NOT EXISTS factory.Product  (
 	 id  serial NOT NULL,
 	 mass  integer NOT NULL,
 	 volume  integer NOT NULL,
@@ -41,7 +41,7 @@ COMMENT ON COLUMN Product.product_type IS 'Тип продукта';
 COMMENT ON COLUMN Product.production_date IS 'Дата производства';
 
 
-CREATE TABLE  IF NOT EXISTS Unit_type  (
+CREATE TABLE  IF NOT EXISTS factory.Unit_type  (
 	 id  serial NOT NULL,
 	 unit_name  TEXT NOT NULL UNIQUE,
 	CONSTRAINT  Unit_type_pk  PRIMARY KEY ( id )
@@ -53,7 +53,7 @@ COMMENT ON COLUMN Unit_type.id IS 'Номер типа агрегата';
 COMMENT ON COLUMN Unit_type.unit_name IS 'Название типа агрегата';
 
 
-CREATE TABLE  IF NOT EXISTS Process  (
+CREATE TABLE  IF NOT EXISTS factory.Process  (
 	 id  serial NOT NULL,
 	 time  TIME NOT NULL,
 	 input_product  integer NOT NULL,
@@ -71,7 +71,7 @@ COMMENT ON COLUMN Process.output_product IS 'Номер типа продукт�
 COMMENT ON COLUMN Process.unit IS 'Номер агрегата';
 
 
-CREATE TABLE  IF NOT EXISTS Unit  (
+CREATE TABLE  IF NOT EXISTS factory.Unit  (
 	 id  serial NOT NULL,
 	 name  TEXT NOT NULL,
 	 type  integer NOT NULL,
@@ -85,7 +85,7 @@ COMMENT ON COLUMN Unit.name IS 'Название агрегата';
 COMMENT ON COLUMN Unit.type IS 'Тип агрегата';
 
 
-CREATE TABLE  IF NOT EXISTS Operation  (
+CREATE TABLE  IF NOT EXISTS factory.Operation  (
 	 id  serial NOT NULL,
 	 unit  integer NOT NULL,
 	 process  integer NOT NULL,
