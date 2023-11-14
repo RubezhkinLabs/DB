@@ -1,3 +1,16 @@
+DROP SCHEMA IF EXISTS factory ;
+
+CREATE SCHEMA IF NOT EXISTS factory
+    AUTHORIZATION nedobezhkin_pv;
+	
+COMMENT ON SCHEMA factory
+    IS 'Factory';
+
+GRANT ALL ON SCHEMA factory TO nedobezhkin_pv;
+
+ALTER ROLE nedobezhkin_pv IN DATABASE nedobezhkin_pv_db
+    SET search_path TO factory, public;
+	
 CREATE TABLE  IF NOT EXISTS Product_type  (
 	 id  serial NOT NULL,
 	 Product_name  TEXT NOT NULL UNIQUE,
@@ -5,9 +18,9 @@ CREATE TABLE  IF NOT EXISTS Product_type  (
 ) WITH (
   OIDS=FALSE
 );
-COMMENT ON TABLE IF NOT EXISTS Product_type IS "Тип продукта"
-COMMENT ON COLUMN Product_type.id ID "Номер типа продукта"
-COMMENT ON COLUMN Product_type.product_name ID "Название типа продукта"
+COMMENT ON TABLE Product_type IS 'Тип продукта';
+COMMENT ON COLUMN Product_type.id IS 'Номер типа продукта';
+COMMENT ON COLUMN Product_type.product_name IS 'Название типа продукта';
 
 
 CREATE TABLE  IF NOT EXISTS Product  (
@@ -20,12 +33,12 @@ CREATE TABLE  IF NOT EXISTS Product  (
 ) WITH (
   OIDS=FALSE
 );
-COMMENT ON TABLE IF NOT EXISTS Product_type IS
-COMMENT ON COLUMN Product.id ID "Номер продукта"
-COMMENT ON COLUMN Product.mass ID "Масса продукта"
-COMMENT ON COLUMN Product.volume ID "Объем продукта"
-COMMENT ON COLUMN Product.product_type ID "Тип продукта"
-COMMENT ON COLUMN Product.production_date ID "Дата производства"
+COMMENT ON TABLE Product_type IS 'Продукт';
+COMMENT ON COLUMN Product.id IS 'Номер продукта';
+COMMENT ON COLUMN Product.mass IS 'Масса продукта';
+COMMENT ON COLUMN Product.volume IS 'Объем продукта';
+COMMENT ON COLUMN Product.product_type IS 'Тип продукта';
+COMMENT ON COLUMN Product.production_date IS 'Дата производства';
 
 
 CREATE TABLE  IF NOT EXISTS Unit_type  (
@@ -35,9 +48,9 @@ CREATE TABLE  IF NOT EXISTS Unit_type  (
 ) WITH (
   OIDS=FALSE
 );
-COMMENT ON TABLE IF NOT EXISTS Unit_type IS "Тип агрегата"
-COMMENT ON COLUMN Unit_type.id ID "Номер типа агрегата"
-COMMENT ON COLUMN Unit_type.unit_name ID "Название типа агрегата"
+COMMENT ON TABLE Unit_type IS 'Тип агрегата';
+COMMENT ON COLUMN Unit_type.id IS 'Номер типа агрегата';
+COMMENT ON COLUMN Unit_type.unit_name IS 'Название типа агрегата';
 
 
 CREATE TABLE  IF NOT EXISTS Process  (
@@ -50,12 +63,12 @@ CREATE TABLE  IF NOT EXISTS Process  (
 ) WITH (
   OIDS=FALSE
 );
-COMMENT ON TABLE IF NOT EXISTS Process IS "Процесс"
-COMMENT ON COLUMN Process.id ID "Номер процесса"
-COMMENT ON COLUMN Process.time ID "Время производства"
-COMMENT ON COLUMN Process.input_product ID "Номер типа продукта на входе"
-COMMENT ON COLUMN Process.output_product ID "Номер типа продукта на выходе"
-COMMENT ON COLUMN Process.unit ID "Номер агрегата"
+COMMENT ON TABLE Process IS 'Процесс';
+COMMENT ON COLUMN Process.id IS 'Номер процесса';
+COMMENT ON COLUMN Process.time IS 'Время производства';
+COMMENT ON COLUMN Process.input_product IS 'Номер типа продукта на входе';
+COMMENT ON COLUMN Process.output_product IS 'Номер типа продукта на выходе';
+COMMENT ON COLUMN Process.unit IS 'Номер агрегата';
 
 
 CREATE TABLE  IF NOT EXISTS Unit  (
@@ -66,10 +79,10 @@ CREATE TABLE  IF NOT EXISTS Unit  (
 ) WITH (
   OIDS=FALSE
 );
-COMMENT ON TABLE IF NOT EXISTS Unit IS "Агрегат"
-COMMENT ON COLUMN Unit.id ID "Номер агрегата"
-COMMENT ON COLUMN Unit.name ID "Название агрегата"
-COMMENT ON COLUMN Unit.type ID "Тип агрегата"
+COMMENT ON TABLE Unit IS 'Агрегат';
+COMMENT ON COLUMN Unit.id IS 'Номер агрегата';
+COMMENT ON COLUMN Unit.name IS 'Название агрегата';
+COMMENT ON COLUMN Unit.type IS 'Тип агрегата';
 
 
 CREATE TABLE  IF NOT EXISTS Operation  (
@@ -82,12 +95,12 @@ CREATE TABLE  IF NOT EXISTS Operation  (
 ) WITH (
   OIDS=FALSE
 );
-COMMENT ON TABLE IF NOT EXISTS Operation IS "Операция"
-COMMENT ON COLUMN Operation.id ID "Номер операции"
-COMMENT ON COLUMN Operation.unit ID "Номер агрегата"
-COMMENT ON COLUMN Operation.process ID "Номер процесса"
-COMMENT ON COLUMN Operation.product_input ID "Номер продукта на входе"
-COMMENT ON COLUMN Operation.id ID "Номер продукта на выходе"
+COMMENT ON TABLE Operation IS 'Операция';
+COMMENT ON COLUMN Operation.id IS 'Номер операции';
+COMMENT ON COLUMN Operation.unit IS 'Номер агрегата';
+COMMENT ON COLUMN Operation.process IS 'Номер процесса';
+COMMENT ON COLUMN Operation.product_input IS 'Номер продукта на входе';
+COMMENT ON COLUMN Operation.id IS 'Номер продукта на выходе';
 
 
 
@@ -104,10 +117,3 @@ ALTER TABLE  Operation  ADD CONSTRAINT  Operation_fk_unit  FOREIGN KEY ( unit ) 
 ALTER TABLE  Operation  ADD CONSTRAINT  Operation_fk_process  FOREIGN KEY ( process ) REFERENCES  Process ( id ) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE  Operation  ADD CONSTRAINT  Operation_fk_product_input FOREIGN KEY ( product_input ) REFERENCES  Product ( id ) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE  Operation  ADD CONSTRAINT  Operation_fk_product_output  FOREIGN KEY ( product_output ) REFERENCES  Product ( id ) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
-
-
-
-
-
