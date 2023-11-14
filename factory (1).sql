@@ -10,6 +10,8 @@ GRANT ALL ON SCHEMA factory TO nedobezhkin_pv;
 
 ALTER ROLE nedobezhkin_pv IN DATABASE nedobezhkin_pv_db
     SET search_path TO factory, public;
+
+drop table if exists operation, process, product, product_type, unit, unit_type cascade
 	
 CREATE TABLE  IF NOT EXISTS factory.Product_type  (
 	 id  serial NOT NULL,
