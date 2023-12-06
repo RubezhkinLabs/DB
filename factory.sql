@@ -104,10 +104,7 @@ COMMENT ON COLUMN factory.Operation.process IS 'Номер процесса';
 COMMENT ON COLUMN factory.Operation.product_input IS 'Номер продукта на входе';
 COMMENT ON COLUMN factory.Operation.id IS 'Номер продукта на выходе';
 
-
-
 ALTER TABLE  factory.Product  ADD CONSTRAINT Product_fk_product_type  FOREIGN KEY ( Product_type ) REFERENCES  Product_type ( id ) ON UPDATE CASCADE ON DELETE RESTRICT;
-
 
 ALTER TABLE  factory.Process  ADD CONSTRAINT Process_fk_input_product  FOREIGN KEY ( input_product ) REFERENCES  Product_type ( id ) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE  factory.Process  ADD CONSTRAINT Process_fk_output_product  FOREIGN KEY ( output_product ) REFERENCES  Product_type ( id ) ON UPDATE CASCADE ON DELETE RESTRICT;
