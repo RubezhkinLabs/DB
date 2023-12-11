@@ -159,7 +159,7 @@ INSERT INTO factory.Process VALUES (2, '00:10:00', 2,6,1);
 INSERT INTO factory.Process VALUES (3, '00:15:00', 5,12,4);
 INSERT INTO factory.Process VALUES (4, '00:15:00', 6,13,4);
 
-INSERT INTO factory.Operation VALUES (1,1,1,1,2);
+INSERT INTO factory.Operation VALUES (1,1,1,1,5);
 INSERT INTO factory.Operation VALUES (2,3,3,3,4);
 INSERT INTO factory.Operation VALUES (3,2,2,5,6);
 INSERT INTO factory.Operation VALUES (4,4,4,7,8);
@@ -177,20 +177,20 @@ CREATE VIEW units AS
 
 CREATE VIEW all_products AS
 	select id, mass, volume, 
-	(select product_name as product_type from product_type where id = product.id), 
+	(select product_name as product_type from product_type where id = product.product_type), 
 	production_date, death_date 
 	from product;
 
 CREATE VIEW products_in_stock AS
 	select id, mass, volume, 
-	(select product_name as product_type from product_type where id = product.id), 
+	(select product_name as product_type from product_type where id = product.product_type), 
 	production_date, death_date 
 	from product
 	where death_date IS NULL;
 
 CREATE VIEW products_archive AS
 	select id, mass, volume, 
-	(select product_name as product_type from product_type where id = product.id), 
+	(select product_name as product_type from product_type where id = product.product_type), 
 	production_date, death_date 
 	from product
 	where death_date IS NOT NULL;
