@@ -31,6 +31,7 @@ CREATE TABLE  IF NOT EXISTS factory.Product  (
 	 volume  integer NOT NULL,
 	 product_type  integer NOT NULL,
 	 production_date  DATE NOT NULL,
+	 death_date DATE,
 	CONSTRAINT Product_pk  PRIMARY KEY ( id )
 ) WITH (
   OIDS=FALSE
@@ -41,7 +42,7 @@ COMMENT ON COLUMN factory.Product.mass IS 'Масса продукта';
 COMMENT ON COLUMN factory.Product.volume IS 'Объем продукта';
 COMMENT ON COLUMN factory.Product.product_type IS 'Тип продукта';
 COMMENT ON COLUMN factory.Product.production_date IS 'Дата производства';
-
+COMMENT ON COLUMN factory.Product.death_date IS 'Дата смерти';
 
 CREATE TABLE  IF NOT EXISTS factory.Unit_type  (
 	 id  serial NOT NULL,
@@ -93,6 +94,7 @@ CREATE TABLE  IF NOT EXISTS factory.Operation  (
 	 process  integer NOT NULL,
 	 product_input  integer NOT NULL,
 	 product_output  integer NOT NULL,
+	 production_date DATE,
 	CONSTRAINT operation_pk  PRIMARY KEY ( id )
 ) WITH (
   OIDS=FALSE
