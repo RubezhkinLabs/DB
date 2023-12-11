@@ -184,7 +184,7 @@ CREATE VIEW all_products AS
 CREATE VIEW products_in_stock AS
 	select id, mass, volume, 
 	(select product_name as product_type from product_type where id = product.product_type), 
-	production_date, death_date 
+	production_date 
 	from product
 	where death_date IS NULL;
 
@@ -194,4 +194,38 @@ CREATE VIEW products_archive AS
 	production_date, death_date 
 	from product
 	where death_date IS NOT NULL;
+
+CREATE VIEW all_operations AS
+	select id, unit, 
+	(select name as unit_name from unit where id = operation.unit), 
+	product_input,
+	(select product_type as input_product from all_products where id = operation.product_input), 
+	product_output,
+	(select product_type as output_product from all_products where id = operation.product_output), 
+	process, 
+	production_date
+	from operation;
+
+CREATE VIEW current_operations AS
+	select id, unit, 
+	(select name as unit_name from unit where id = operation.unit), 
+	product_input,
+	(select product_type as input_product from all_products where id = operation.product_input), 
+	product_output,
+	(select product_type as output_product from all_products where id = operation.product_output), 
+	process
+	from operation;
+	where production_date IS NULL;
+
+CREATE VIEW archive_operations AS
+	select id, unit, 
+	(select name as unit_name from unit where id = operation.unit), 
+	product_input,
+	(select product_type as input_product from all_products where id = operation.product_input), 
+	product_output,
+	(select product_type as output_product from all_products where id = operation.product_output), 
+	process, 
+	production_date
+	from operation
+	where production_date IS NOT NULL;
 
