@@ -214,7 +214,7 @@ CREATE VIEW current_operations AS
 	product_output,
 	(select product_type as output_product from all_products where id = operation.product_output), 
 	process
-	from operation;
+	from operation
 	where production_date IS NULL;
 
 CREATE VIEW archive_operations AS
@@ -228,4 +228,3 @@ CREATE VIEW archive_operations AS
 	production_date
 	from operation
 	where production_date IS NOT NULL;
-
