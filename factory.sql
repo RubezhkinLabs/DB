@@ -30,7 +30,7 @@ CREATE TABLE  IF NOT EXISTS factory.Product  (
 	 mass  integer NOT NULL,
 	 volume  integer NOT NULL,
 	 product_type  integer NOT NULL,
-	 production_date  DATE NOT NULL,
+	 production_date  DATE,
 	 death_date DATE,
 	CONSTRAINT Product_pk  PRIMARY KEY ( id )
 ) WITH (
@@ -60,7 +60,7 @@ CREATE TABLE  IF NOT EXISTS factory.Process  (
 	 id  serial NOT NULL,
 	 time  TIME NOT NULL,
 	 input_product  integer NOT NULL,
-	 output_product  integer NOT NULL UNIQUE,
+	 output_product  integer NOT NULL,
 	 unit  integer NOT NULL,
 	CONSTRAINT Process_pk  PRIMARY KEY ( id )
 ) WITH (
@@ -181,6 +181,13 @@ CREATE VIEW all_products AS
 	production_date, death_date 
 	from product;
 
+CREATE VIEW products_in_manufacturing
+	select id, mass, volume, 
+	(select product_name as product_type from product_type where id = product.product_type), 
+	production_date 
+	from product
+	where production_date IS NULL;
+	
 CREATE VIEW products_in_stock AS
 	select id, mass, volume, 
 	(select product_name as product_type from product_type where id = product.product_type), 
@@ -217,14 +224,5 @@ CREATE VIEW current_operations AS
 	from operation
 	where production_date IS NULL;
 
-CREATE VIEW archive_operations AS
-	select id, unit, 
-	(select name as unit_name from unit where id = operation.unit), 
-	product_input,
-	(select product_type as input_product from all_products where id = operation.product_input), 
-	product_output,
-	(select product_type as output_product from all_products where id = operation.product_output), 
-	process, 
-	production_date
-	from operation
-	where production_date IS NOT NULL;
+
+	
