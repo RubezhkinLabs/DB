@@ -141,13 +141,13 @@ INSERT INTO factory.Unit_type VALUES (4, 'Сборочный автомат');
 INSERT INTO factory.Unit_type VALUES (5, 'Химический завод');
 
 INSERT INTO factory.Product VALUES (1, 1, 1, 1, '2023-01-01');
-INSERT INTO factory.Product VALUES (2, 1, 1, 5, '2023-02-02');
+INSERT INTO factory.Product VALUES (2, 1, 1, 5);
 INSERT INTO factory.Product VALUES (3, 1, 1, 5, '2023-03-03');
-INSERT INTO factory.Product VALUES (4, 1, 1, 12, '2023-04-04');
+INSERT INTO factory.Product VALUES (4, 1, 1, 12);
 INSERT INTO factory.Product VALUES (5, 1, 1, 2, '2023-05-05');
-INSERT INTO factory.Product VALUES (6, 1, 1, 6, '2023-06-06');
+INSERT INTO factory.Product VALUES (6, 1, 1, 6);
 INSERT INTO factory.Product VALUES (7, 1, 1, 6, '2023-07-07');
-INSERT INTO factory.Product VALUES (8, 1, 1, 13, '2023-08-08');
+INSERT INTO factory.Product VALUES (8, 1, 1, 13);
 
 INSERT INTO factory.Unit VALUES (1,'Печь 1',1);
 INSERT INTO factory.Unit VALUES (2,'Печь 2',1);
@@ -181,7 +181,7 @@ CREATE VIEW all_products AS
 	production_date, death_date 
 	from product;
 
-CREATE VIEW products_in_manufacturing
+CREATE VIEW products_in_manufacturing AS
 	select id, mass, volume, 
 	(select product_name as product_type from product_type where id = product.product_type), 
 	production_date 
