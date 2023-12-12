@@ -239,7 +239,7 @@ CREATE OR REPLACE FUNCTION check_operation_availability() RETURNS TRIGGER AS $$
         active_operation_exists INTEGER;
         product_exists INTEGER;
     BEGIN
-        SELECT COUNT(*) INTO active_operation_exists FROM operation WHERE unit = NEW.unit AND production_date IS NOT NULL;
+        SELECT COUNT(*) INTO active_operation_exists FROM operation WHERE unit = NEW.unit AND production_date IS NULL;
         IF active_operation_exists > 0 THEN
             RAISE EXCEPTION 'There is already an active operation for the specified unit';
         END IF;
