@@ -234,3 +234,40 @@ CREATE VIEW archive_operations AS
 	from operation
 	where production_date IS NOT NULL;
 	
+CREATE OR REPLACE FUNCTION check_operation_availability() RETURNS TRIGGER AS $$
+    DECLARE
+        active_operation_exists INTEGER;
+        product_exists INTEGER;
+    BEGIN
+        SELECT COUNT(*) INTO active_operation_exists FROM operation WHERE unit = NEW.unit AND production_date IS NOT NULL;
+        IF active_operation_exists > 0 THEN
+            RAISE EXCEPTION 'There is already an active operation for the specified unit';
+        END IF;
+
+        SELECT COUNT(*) INTO product_exists FROM product WHERE id = NEW.product_input AND death_date IS NULL AND production_date IS NOT NULL AND product_type = (SELECT input_product FROM process WHERE id = NEW.process);
+        IF product_exists = 0 THEN
+            RAISE EXCEPTION 'The input product does not exist or does not match the recipe';
+        END IF;
+
+        INSERT INTO product (mass, volume, product_type, production_date) VALUES (1, 1, (SELECT output_product FROM process WHERE id = NEW.process), NOW()) RETURNING id INTO NEW.product_output;
+        UPDATE operation SET product_output = NEW.product_output WHERE id = NEW.id;
+    
+        RETURN NEW;
+    END;
+ $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER operation_availability_trigger 
+BEFORE INSERT ON operation 
+FOR EACH ROW EXECUTE FUNCTION 
+check_operation_availability();
+
+CREATE OR REPLACE FUNCTION set_prod_date(unit_id INTEGER)
+RETURNS VOID AS $$
+declare
+	operation_id integer;
+begin
+	select id into operation_id from operation where unit = unit_id and production_date is null;	
+	update operation set production_date = NOW() where id = operation_id;
+	update product set production_date = NOW() where id in (select product_output  from operation where id = operation_id);
+end;
+$$ LANGUAGE plpgsql;
