@@ -249,7 +249,7 @@ CREATE OR REPLACE FUNCTION check_operation_availability() RETURNS TRIGGER AS $$
             RAISE EXCEPTION 'The input product does not exist or does not match the recipe';
         END IF;
 
-        INSERT INTO product (mass, volume, product_type, production_date) VALUES (1, 1, (SELECT output_product FROM process WHERE id = NEW.process), NOW()) RETURNING id INTO NEW.product_output;
+        INSERT INTO product (mass, volume, product_type) VALUES (1, 1, (SELECT output_product FROM process WHERE id = NEW.process) RETURNING id INTO NEW.product_output;
         UPDATE operation SET product_output = NEW.product_output WHERE id = NEW.id;
     
         RETURN NEW;
