@@ -249,10 +249,10 @@ CREATE OR REPLACE FUNCTION check_operation_availability() RETURNS TRIGGER AS $$
             RAISE EXCEPTION 'The input product does not exist or does not match the recipe';
         END IF;
 
-        INSERT INTO product (mass, volume, product_type) VALUES (1, 1, (SELECT output_product FROM process WHERE id = NEW.process) RETURNING id INTO NEW.product_output;
+        INSERT INTO product (mass, volume, product_type) VALUES (1, 1, (SELECT output_product FROM process WHERE id = NEW.process)) RETURNING id INTO NEW.product_output;
         UPDATE operation SET product_output = NEW.product_output WHERE id = NEW.id;
 
-	UPDATE product SET death_date = NOW() WHERE id in NEW.product_input;
+		UPDATE product SET death_date = NOW() WHERE id = NEW.product_input;
     
         RETURN NEW;
     END;
@@ -265,11 +265,11 @@ check_operation_availability();
 
 CREATE OR REPLACE FUNCTION set_prod_date(unit_id INTEGER)
 RETURNS VOID AS $$
-declare
+DECLARE
 	operation_id integer;
-begin
-	select id into operation_id from operation where unit = unit_id and production_date is null;	
-	update operation set production_date = NOW() where id = operation_id;
-	update product set production_date = NOW() where id in (select product_output  from operation where id = operation_id);
-end;
+BEGIN
+	SELECT id INTO operation_id FROM operation WHERE unit = unit_id and production_date is null;	
+	UPDATE operation set production_date = NOW() WHERE id = operation_id;
+	UPDATE product set production_date = NOW() WHERE id in (select product_output  from operation where id = operation_id);
+END;
 $$ LANGUAGE plpgsql;
