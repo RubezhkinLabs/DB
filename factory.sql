@@ -273,3 +273,16 @@ BEGIN
 	UPDATE product set production_date = NOW() WHERE id in (select product_output  from operation where id = operation_id);
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE SEQUENCE	product_id_sequence
+	START WITH 9;
+	
+DO $$
+DECLARE
+i integer;
+BEGIN
+	FOR i in 1..5 LOOP
+		INSERT INTO PRODUCT VALUES(nextval('product_id_sequence'),1,1, floor(random())*14+1);
+	END LOOP;
+END;
+$$ LANGUAGE plpgsql;
