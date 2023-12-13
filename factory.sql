@@ -282,7 +282,7 @@ DECLARE
 i integer;
 BEGIN
 	FOR i in 1..5 LOOP
-		INSERT INTO PRODUCT VALUES(nextval('product_id_sequence'),1,1, floor(random())*14+1);
+		INSERT INTO PRODUCT VALUES(nextval('product_id_sequence'),1,1,floor(random()*14+1),NOW());
 	END LOOP;
 END;
 $$ LANGUAGE plpgsql;
