@@ -287,3 +287,20 @@ BEGIN
 	END LOOP;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE ROLE engineer;
+GRANT ALL ON DATABASE factory.Unit TO engineer;
+GRANT ALL ON DATABASE factory.Unit_type TO engineer;
+GRANT ALL ON DATABASE factory.Process TO engineer;
+GRANT SELECT ON DATABASE factory.Operation TO engineer;
+GRANT SELECT ON DATABASE factory.Product TO engineer;
+
+CREATE ROLE worker;
+GRANT SELECT ON DATABASE factory.Unit TO worker;
+GRANT SELECT ON DATABASE factory.Unit_type TO worker;
+GRANT SELECT ON DATABASE factory.Process TO worker;
+GRANT ALL ON DATABASE factory.Operation TO worker;
+GRANT ALL ON DATABASE factory.Product TO worker;
+
+CREATE USER petrovich WITH LOGIN engineer;
+CREATE USER mihalych WITH LOGIN worker;
