@@ -289,18 +289,29 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE ROLE engineer;
-GRANT ALL ON DATABASE factory.Unit TO engineer;
-GRANT ALL ON DATABASE factory.Unit_type TO engineer;
-GRANT ALL ON DATABASE factory.Process TO engineer;
+GRANT CONNECT ON DATABASE nedobezhkin_pv_db TO engineer;
+GRANT USAGE ON SCHEMA factory TO engineer;
+GRANT SELECT, INSERT, UPDATE, DELETE ON DATABASE factory.Unit TO engineer;
+GRANT SELECT, INSERT, UPDATE, DELETE ON DATABASE factory.Unit_type TO engineer;
+GRANT SELECT, INSERT, UPDATE, DELETE ON DATABASE factory.Process TO engineer;
 GRANT SELECT ON DATABASE factory.Operation TO engineer;
 GRANT SELECT ON DATABASE factory.Product TO engineer;
 
 CREATE ROLE worker;
+GRANT CONNECT ON DATABASE nedobezhkin_pv_db TO worker;
+GRANT USAGE ON SCHEMA factory TO worker;
 GRANT SELECT ON DATABASE factory.Unit TO worker;
 GRANT SELECT ON DATABASE factory.Unit_type TO worker;
 GRANT SELECT ON DATABASE factory.Process TO worker;
-GRANT ALL ON DATABASE factory.Operation TO worker;
-GRANT ALL ON DATABASE factory.Product TO worker;
+GRANT SELECT, INSERT, UPDATE, DELETE ON DATABASE factory.Operation TO worker;
+GRANT SELECT, INSERT, UPDATE, DELETE ON DATABASE factory.Product TO worker;
 
-CREATE USER petrovich WITH LOGIN engineer;
-CREATE USER mihalych WITH LOGIN worker;
+CREATE USER petrovich;
+GRANT engineer TO petrovich;
+GRANT CONNECT ON DATABASE nedobezhkin_pv_db to petrovich
+ALTER ROLE petrovich IN DATABASE nedobezhkin_pv_db SET search_path TO factory, public;
+
+CREATE USER mihalych;
+GRANT worker TO mihalych;
+GRANT CONNECT ON DATABASE nedobezhkin_pv_db to mihalych
+ALTER ROLE mihalych IN DATABASE nedobezhkin_pv_db SET search_path TO factory, public;
