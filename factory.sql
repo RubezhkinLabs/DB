@@ -287,6 +287,27 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+REVOKE ALL PRIVILEGES ON DATABASE nedobezhkin_pv_db FROM engineer;
+REVOKE ALL PRIVILEGES ON SCHEMA factory FROM engineer;
+REVOKE ALL PRIVILEGES ON TABLE Operation, Process, Product, Product_type, Unit, Unit_type FROM engineer;
+REVOKE ALL PRIVILEGES ON DATABASE nedobezhkin_pv_db FROM petrovich;
+REVOKE ALL PRIVILEGES ON SCHEMA factory FROM petrovich;
+REVOKE ALL PRIVILEGES ON TABLE Operation, Process, Product, Product_type, Unit, Unit_type FROM petrovich;
+
+DROP USER IF EXISTS petrovich;
+DROP ROLE IF EXISTS engineer;
+
+REVOKE ALL PRIVILEGES ON DATABASE nedobezhkin_pv_db FROM worker;
+REVOKE ALL PRIVILEGES ON SCHEMA factory FROM worker;
+REVOKE ALL PRIVILEGES ON TABLE Operation, Process, Product, Product_type, Unit, Unit_type FROM worker;
+REVOKE ALL PRIVILEGES ON DATABASE nedobezhkin_pv_db FROM mihalych;
+REVOKE ALL PRIVILEGES ON SCHEMA factory FROM mihalych;
+REVOKE ALL PRIVILEGES ON TABLE Operation, Process, Product, Product_type, Unit, Unit_type FROM mihalych;
+
+
+DROP USER IF EXISTS mihalych;
+DROP ROLE IF EXISTS worker;
+
 CREATE ROLE engineer;
 GRANT CONNECT ON DATABASE nedobezhkin_pv_db TO engineer;
 GRANT USAGE ON SCHEMA factory TO engineer;
@@ -305,12 +326,12 @@ GRANT SELECT ON DATABASE Process TO worker;
 GRANT SELECT, INSERT, UPDATE, DELETE ON DATABASE Operation TO worker;
 GRANT SELECT, INSERT, UPDATE, DELETE ON DATABASE Product TO worker;
 
-CREATE USER petrovich;
+CREATE USER petrovich with password '1';
 GRANT engineer TO petrovich;
 GRANT CONNECT ON DATABASE nedobezhkin_pv_db to petrovich;
 ALTER ROLE petrovich IN DATABASE nedobezhkin_pv_db SET search_path TO factory, public;
 
-CREATE USER mihalych;
+CREATE USER mihalych with password '1';
 GRANT worker TO mihalych;
 GRANT CONNECT ON DATABASE nedobezhkin_pv_db to mihalych;
 ALTER ROLE mihalych IN DATABASE nedobezhkin_pv_db SET search_path TO factory, public;
