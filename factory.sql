@@ -133,7 +133,6 @@ INSERT INTO factory.Product_type VALUES (11, 'Мазут');
 INSERT INTO factory.Product_type VALUES (12, 'Железная труба');
 INSERT INTO factory.Product_type VALUES (13, 'Медная проволока');
 INSERT INTO factory.Product_type VALUES (14, 'Сера');
-INSERT INTO factory.Product_type VALUES (15, 'Сера');
 
 INSERT INTO factory.Unit_type VALUES (1, 'Печь');
 INSERT INTO factory.Unit_type VALUES (2, 'Центрифуга');
